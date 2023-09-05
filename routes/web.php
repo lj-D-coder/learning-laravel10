@@ -1,7 +1,10 @@
 <?php
 
 use App\Models\Post;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use League\CommonMark\Extension\FrontMatter\Data\LibYamlFrontMatterParser;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +18,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-
-    $posts= Post::findall();
-    return view('posts',[
-        'posts' => $posts
-    ]);
+    $files = File::files(resource_path("posts"));
+    $document = [];
+    foreach ($files as $file)
+    {
+        $document[]= YamlFrontMatter::parseFile($file);
+    }
+    dd($document);
+    // $posts= Post::findall();
+    // return view('posts',[
+    //     'posts' => $posts
+    // ]);
 });
 
 Route::get('/posts/{post}', function($slug){
