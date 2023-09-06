@@ -9,6 +9,9 @@
                 <a href="/posts/<?= $post->slug;?>">
                     <?= $post->title;?></h1>
                 </a>
+                <div>
+                    <?= $post->excerpt;?></h1>
+                </div>
 
         </article>
     <?php endforeach; ?>
