@@ -3,13 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
 
-class Post extends Model
+class Post
 {
-    use HasFactory;
+    // use HasFactory;
+
+    public $title;
+    public $excerpt;
+    public $date;
+    public $body;
+    public $slug;
+
+    /**
+     * @param $title
+     * @param $excerpt
+     * @param $date
+     * @param $body
+     */
+    public function __construct($title, $excerpt, $date, $body,  $slug)
+    {
+        $this->title = $title;
+        $this->excerpt = $excerpt;
+        $this->date = $date;
+        $this->body = $body;
+        $this->slug = $slug;
+    }
+
 
     public static function find($slug)
     {
@@ -36,3 +57,4 @@ class Post extends Model
         return array_map(fn ($file) => $file->getContents(), $files);
     }
 }
+
