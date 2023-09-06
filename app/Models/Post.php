@@ -32,22 +32,6 @@ class Post
         $this->slug = $slug;
     }
 
-
-    public static function find($slug)
-    {
-        if (!file_exists($path = resource_path("posts/{$slug}.html"))) {
-            // abort(404);
-            throw new ModelNotFoundException();
-        }
-        //add caching
-        // $post = cache()->remember('post.{$slug}', 5, function () use ($path) {
-        //     return file_get_contents($path);
-        // });
-        // with arrow funftion single line is enough
-
-        $post = cache()->remember('post.{$slug}', 5, fn () => file_get_contents($path));
-    }
-
     public static function findall()
     {
         return collect(File::files(resource_path("posts")))
@@ -59,5 +43,10 @@ class Post
                 $document->body(),
                 $document->slug
             ));
+    }
+
+    public static function find($slug)
+    {
+        return static::findall()->firstWhere('slug',$slug);
     }
 }
