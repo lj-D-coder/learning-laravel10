@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\Post;
-use Illuminate\Support\Facades\File;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use League\CommonMark\Extension\FrontMatter\Data\LibYamlFrontMatterParser;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,19 +11,28 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
 Route::get('/', function () {
-    return view('posts', [
-        'posts' =>Post::findall()
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
     ]);
 });
 
-Route::get('/posts/{post}', function ($slug) {
-    //find a post by its slug and pass it to the view call post
-    $post = Post::find($slug);
-    return view('post', ['post' => $post]);
-})->where('post', '[A-z_\-]+');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
