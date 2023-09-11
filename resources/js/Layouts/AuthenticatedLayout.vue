@@ -2,8 +2,6 @@
 import Navigation from '@/Components/app/Navigation.vue';
 import SearchForm from '@/Components/app/SearchForm.vue';
 import UserSettingsDropdown from '@/Components/app/UserSettingsDropdown.vue';
-
-
 </script>
 
 <template>
@@ -13,7 +11,10 @@ import UserSettingsDropdown from '@/Components/app/UserSettingsDropdown.vue';
             <div class="flex items-centern justify-between w-full">
                 <SearchForm />
                 <UserSettingsDropdown />
-
+            </div>
+            <div class="flex-1 flex flex-col overflow-hidden">
+                <slot />
             </div>
         </main>
+    </div>>
 </template>
