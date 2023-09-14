@@ -1,5 +1,5 @@
 <template>
-  <form class="w-[600px] h-[80px] flex items-center">
+  <form class="w-full h-[80px] flex items-center">
     <TextInput type="text" class="block w-full mr-2" v-model="form.search" autocomplete placeholder ="Search For Files and Folder" />
   </form>
 </template>
